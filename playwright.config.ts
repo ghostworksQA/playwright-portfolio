@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Configuração do projeto. Ver https://playwright.dev/docs/test-configuration
+ * Project configuration. See https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
   testDir: './tests',
@@ -13,14 +13,14 @@ export default defineConfig({
 
   use: {
     baseURL: 'https://www.saucedemo.com',
-    // O saucedemo marca os elementos com data-test, e não com o data-testid que o Playwright usa por omissão
+    // SauceDemo uses data-test attributes instead of Playwright's default data-testid.
     testIdAttribute: 'data-test',
     trace: 'on-first-retry',
   },
 
-  // Localmente (macOS 13) o Chromium do Playwright não está disponível, por isso usa-se o Google Chrome instalado.
-  // No CI (GitHub Actions, Linux) usa-se o Chromium do Playwright.
-  projects: process.env.CI
-    ? [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }]
-    : [{ name: 'chrome', use: { ...devices['Desktop Chrome'], channel: 'chrome' } }],
+  projects: [
+    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+  ],
 });
